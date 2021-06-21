@@ -15,7 +15,6 @@ mini_screen = OLED()
 mini_screen.set_max_fps(1)
 mini_screen.draw_multiline_text("welcome to sensor box script. Press o to start recording enviroment", font_size = 12)
 
-
 up = UpButton()
 down = DownButton()
 select = SelectButton()
@@ -43,19 +42,30 @@ def stop_recording():
     mini_screen.draw_multiline_text("stopped recording. Press o to start recording.", font_size = 12)
     recording = False
 
+exiting = False
+
+
 while True:
     if cancel.is_pressed:
-        if recording:
+        print("cancel_pressed")
+        if recording:#press cancel once (from running state)
             recording = False
             stop_recording()
             print("Cancel pressed")
-
+        else:
+            if exiting:# press cancel three times (from stopped state)
+                exit()
+            else:# press cancel twice (from stopped state)
+                mini_screen.draw_multiline_text("are you sure you want to exit? Press x again to confirm.", font_size = 12)
+                exiting = True
+        sleep(1)
     if select.is_pressed:
-        if not recording:
+        print("select_pressed")
+        if exiting:# if we were in cancel twice state go back to cancel once state
+            exiting = False
+            stop_recording()
+        elif not recording:# enter recording state from from cancel once state
             recording = True
             start_recording()
             print("Select pressed")
-
-
-    
-
+        sleep(1)

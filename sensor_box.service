@@ -1,0 +1,13 @@
+[Unit]
+Description=sensor_box
+After=syslog.target network.target
+
+[Service]
+Type=simple
+User=pi
+WorkingDirectory=/home/pi/sensor_box
+ExecStart=/usr/bin/python3 sensor_box.py
+Restart=no
+
+[Install]
+WantedBy=multi-user.target
