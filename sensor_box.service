@@ -1,13 +1,15 @@
 [Unit]
 Description=sensor_box
-After=syslog.target network.target
+After=syslog.target network.target pt-sys-oled.service
 
 [Service]
 Type=simple
 User=pi
+ExecStartPre=/bin/sleep 60
 WorkingDirectory=/home/pi/sensor_box
 ExecStart=/usr/bin/python3 sensor_box.py
 Restart=no
+TimeoutStartSec=70
 
 [Install]
 WantedBy=multi-user.target
