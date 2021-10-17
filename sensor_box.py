@@ -5,14 +5,14 @@ from time import sleep
 
 import csv
 import threading
-from pitop.pma import SoundSensor
-from pitop.pma import LightSensor
-from pitop.miniscreen import UpButton, DownButton, SelectButton, CancelButton
-from pitop.miniscreen import OLED
+from pitop import SoundSensor
+from pitop import LightSensor
+from pitop import Pitop
 import datetime
 import logging
 import sys, errno
 
+#region pitop-set-up
 logging.basicConfig(handlers=[logging.StreamHandler(stream=sys.stdout)]
                     , format="%(asctime)s %(name)s:%(levelname)s:%(message)s", datefmt="%F %A %T", level=logging.DEBUG)
 # logging.FileHandler(filename="sensor_box.log", encoding='utf-8',mode = "a+")
@@ -22,18 +22,22 @@ try:
 
     logging.debug(f"try to initialize OLED and Sensors")
 
-    mini_screen = OLED()
+    mini_screen = Pitop().miniscreen
     mini_screen.set_max_fps(1)
     mini_screen.draw_multiline_text("welcome to sensor box script. Press o to start recording enviroment", font_size=12)
 
 except Exception as e:
     logging.exception("kaputt")
-sys.exit(errno.EAGAIN)
+    sys.exit(errno.EAGAIN)
+
+up = mini_screen.up_button
+down = mini_screen.down_button
+select = mini_screen.select_button
+cancel = mini_screen.cancel_button
 
 sound_sensor = SoundSensor("A1")
 light_sensor = LightSensor("A0")
-select = SelectButton()
-cancel = CancelButton()
+#endregion
 
 logging.debug("starting idle phase")
 recording = False
@@ -67,6 +71,7 @@ def stop_recording():
     recording = False
 
 
+#region button press
 cancel_pressed = False
 select_pressed = False
 
@@ -89,8 +94,9 @@ def cancel_down():
             return True
         else:
             return False
+# endregion
 
-
+#region interface state machine
 state = 0
 while True:
 
@@ -113,3 +119,4 @@ while True:
             stop_recording()
         elif cancel_down():
             exit()
+#endregion
