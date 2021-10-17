@@ -73,7 +73,7 @@ select_pressed = False
 
 def select_down():
     global select_pressed
-    if select_pressed != select.is_pressed:  # state has canged
+    if select_pressed != select.is_pressed:  # state has changed
         select_pressed = select.is_pressed
         if select.is_pressed:
             return True
@@ -83,7 +83,7 @@ def select_down():
 
 def cancel_down():
     global cancel_pressed
-    if cancel_pressed != cancel.is_pressed:  # state has canged
+    if cancel_pressed != cancel.is_pressed:  # state has changed
         cancel_pressed = cancel.is_pressed
         if cancel.is_pressed:
             return True
