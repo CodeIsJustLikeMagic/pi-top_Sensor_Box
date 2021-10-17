@@ -20,13 +20,8 @@ def brightness(img_hsv):
     h, s, v = cv2.split(img_hsv)
     print("brightness:", np.mean(v))
 
-with PiCamera() as camera:
-    camera.start_preview()
-    try:
-        for i, filename in enumerate(camera.capture_continouous('image{counter:02d}.jpg')):
-            print(filename)
-            time.sleep(1)
-            if i == 5:
-                break
-    finally:
-        camera.stop_preview()
+camera = PiCamera()
+camera.resolution(1024, 768)
+camera.start_preview()
+time.sleep(2)
+camera.capture('foo.jpg')
