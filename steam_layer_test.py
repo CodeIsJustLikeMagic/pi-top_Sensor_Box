@@ -19,6 +19,7 @@ while True:
         # make a new random n_channels sample; this is converted into a
         # pylsl.vectorf (the data type that is expected by push_sample)
         # now send it
+        mysample = [rand() for _ in range(n_channels)]
         outlet.push_sample(mysample)
     sent_samples += required_samples
     # now send it and wait for a bit before trying again.
