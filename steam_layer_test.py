@@ -10,8 +10,8 @@ light_sensor = LightSensor("A0")
 
 srate = 100
 name = 'pi-top chan'
-ttype = 'LightSound'
-n_channels = 3
+ttype = 'SoundLight'
+n_channels = 2
 info = StreamInfo(name, ttype, n_channels, srate, 'float32', 'myuid34234')
 outlet = StreamOutlet(info)
 
@@ -27,7 +27,8 @@ while True:
         # now send it
         # mysample = [rand() for _ in range(n_channels)]
         mysample = [sound_sensor.reading, light_sensor.reading]
+        #print(mysample)
         outlet.push_sample(mysample)
     sent_samples += required_samples
     # now send it and wait for a bit before trying again.
-    time.sleep(0.1)
+    time.sleep(0.01)
